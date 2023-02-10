@@ -25,7 +25,7 @@ doom exposes five (optional) variables for controlling fonts in doom:
 - `doom-unicode-font':: for unicode glyphs
 - `doom-serif-font':: for the `fixed-pitch-serif' face
 #+begin_src emacs-lisp
-(setq doom-font (font-spec :family "Monolisa" :size 25 :weight 'regular)
+(setq doom-font (font-spec :family "Monolisa" :size 25 :weight 'light)
       doom-big-font (font-spec :family "Monolisa" :size 30 :weight 'bold)
       doom-pitch-font (font-spec :family "Monolisa" :size 25)
       doom-variable-pitch-font (font-spec :family "Monolisa" :size 25)
@@ -36,8 +36,10 @@ doom exposes five (optional) variables for controlling fonts in doom:
   (setq! doom-themes-enable-italic t))
 
 (custom-set-faces!
-  '(font-lock-comment-face    :slant italic :weight regular)
-  '(font-lock-keyword-face    :slant italic :weight medium))
+  '(font-lock-comment-face    :slant italic :weight light)
+  '(font-lock-string-face     :slant italic :weight light)
+  '(font-lock-type-face       :slant italic :weight light)
+  '(font-lock-keyword-face    :slant italic :weight light))
 
 (setq org-src-fontify-natively t)
 #+end_src
@@ -326,16 +328,16 @@ numbers are disabled. For relative line numbers, set this to `relative'.
   (dolist
       (face
        '(
-        ;; Family face              Size | Background | Foreground  | Slant   | Weight
-          (font-lock-comment-face    1.00   nil          "#72696A"    italic    regular)
-          (font-lock-keyword-face    1.00   nil          "#FD6883"    italic    regular)
+        ;; Family face             | Size | Background | Foreground | Slant   | Weight
+          (font-lock-comment-face    1.00   nil          "#72696A"    italic    light)
+          (font-lock-keyword-face    1.00   nil          "#FD6883"    italic    light)
           (line-number-current-line  1.00   nil          "#F9CC6C"    normal    bold)
           (org-block-begin-line      1.00   nil          "#A8A9EB"    italic    regular)
           (org-block-end-line        1.00   nil          "#A8A9EB"    italic    regular)
           (org-document-info-keyword 1.00   nil          "#A8A9EB"    italic    bold)
           (org-document-title        1.50   nil          "#FD6883"    normal    bold)
           (org-done                  1.00   nil          "#72696A"    italic    regular)
-          (org-drawer                1.00   nil          "#A8A9EB"    italic    light)
+          (org-drawer                1.00   nil          "#A8A9EB"    italic    regular)
           (org-headline-done         1.00   nil          "#72696A"    italic    bold)
           (org-level-1               1.32   nil          "#F38D70"    normal    semibold)
           (org-level-2               1.28   nil          "#F9CC6C"    normal    semibold)
@@ -345,25 +347,34 @@ numbers are disabled. For relative line numbers, set this to `relative'.
           (org-level-6               1.12   nil          "#F38D70"    normal    semibold)
           (org-level-7               1.08   nil          "#F9CC6C"    normal    semibold)
           (org-level-8               1.04   nil          "#ADDA78"    normal    semibold)
-          (org-meta-line             1.00   nil          "#A8A9EB"    italic    light)
-          (org-property-value        1.00   nil          "#F9CC6C"    italic    light)
+          (org-meta-line             1.00   nil          "#A8A9EB"    italic    regular)
+          (org-property-value        1.00   nil          "#F9CC6C"    italic    regular)
           (org-special-keyword       1.00   nil          "#A8A9EB"    italic    regular)
-          (org-todo                  1.00   nil          "#ADDA78"          normal    bold)
+          (org-todo                  1.00   nil          "#ADDA78"    normal    bold)
           ;; (hl-line                   1.00   "#382F2F"    nil          normal   regular)
-          (org-block                 1.00   "#2F2828"    nil          normal    light)
-          (region                    1.00   "#4C4646"    nil          normal    regular)))
+          (org-block                 1.00   "#2F2828"    nil          normal    light)))
     (set-face-attribute (nth 0 face) nil
                         :font        doom-variable-pitch-font
                         :height      (nth 1 face)
                         :background  (nth 2 face)
                         :foreground  (nth 3 face)
                         :slant       (nth 4 face)
-                        :weight      (nth 5 face))))
+                        :weight      (nth 5 face)))
+  (set-face-attribute 'region  nil :background "#4C4646" :weight 'medium)
+  (set-face-attribute 'link    nil :weight 'light)
+  (set-face-attribute 'bold    nil :weight 'regular)
+  (set-face-attribute 'hl-line nil :background "#382F2F" :weight 'regular))
+
 (after! org
   (add-hook 'org-mode-hook 'ap/org-colors-monokai-ristretto))
-
 #+end_src
-
+* Tree Sitter
+** Enable tree for python
+#+begin_src emacs-lisp
+(after! python
+  (add-hook 'python-mode-hook #'tree-sitter-mode)
+  (add-hook 'python-mode-hook #'tree-sitter-hl-mode))
+#+end_src
 * Snowflake
 ** Require ejc-sql
 #+begin_src emacs-lisp
