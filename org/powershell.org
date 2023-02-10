@@ -1,0 +1,28 @@
+#+title: Powershell
+#+startup: overview
+
+* Starship
+#+begin_src powershell
+Invoke-Expression (&starship init powershell)
+# & ([ScriptBlock]::Create((oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\bubbles.omp.json" --print) -join "`n"))
+#+end_src
+* Aliases
+#+begin_src powershell
+New-Alias -Name vi -Value nvim
+New-Alias -Name fish -Value pengwin
+New-Alias -Name conda -Value "C:\Users\andre\miniconda3\condabin\conda.bat"
+#+end_src
+* Autocomplete
+#+begin_src powershell
+Import-Module PSReadLine
+Set-PSReadLineKeyHandler -Key Tab -Function MenuComplete
+Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
+Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
+Set-PSReadLineOption -ShowToolTips
+Set-PSReadLineOption -PredictionSource History
+Set-PSReadLineOption -EditMode vi
+#+end_src
+* AWS
+#+begin_src powershell
+Initialize-AWSDefaultConfiguration -ProfileLocation C:\Users\andre\training\aws\streaming-twitter\cfg\aws_credentials
+#+end_src

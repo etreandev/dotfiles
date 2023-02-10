@@ -1,0 +1,19 @@
+#+title: Wishlist
+#+tags: @PERSONAL @PROFESSIONAL @EBOOK @VACATIONS @MOVIE
+#+tags: @GAME @SHOW
+
+* WANT Gintronic :@PERSONAL:
+:properties:
+:price: 150
+:expires: NO
+:end:
+* WANT Mastering Emacs :@PROFESSIONAL:@EBOOK:
+:properties:
+:price: 150
+:expires: NO
+:end:
+* WANT Scrum Master :@PROFESSIONAL:
+* WANT AWS Cloud Practitioner :@PROFESSIONAL:
+* WANT AWS Solutions Architect :@PROFESSIONAL:
+* WANT Book of the Ancestor 3 :@EBOOK:
+* WANT Pipdecs :@PROFESSIONAL:

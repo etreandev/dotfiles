@@ -1,0 +1,2 @@
+#+title: Nyxt
+#+startup: overview

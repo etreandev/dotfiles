@@ -1,0 +1,22 @@
+#+title: Fish
+#+startup: overview
+
+* Starship
+#+begin_src fish
+starship init fish | source
+#+end_src
+* Aliases
+#+begin_src fish
+alias doom ~/.emacs.d/bin/doom
+alias vi nvim
+alias nyxt nyxt/usr/local/bin/nyxt
+alias pwsh "/mnt/c/Program\ Files/PowerShell/7/pwsh.exe"
+alias conda /home/andres/miniconda3/bin/conda
+#+end_src
+* Conda
+#+begin_src fish
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+eval /home/andres/miniconda3/bin/conda "shell.fish" "hook" $argv | source
+# <<< conda initialize <<<
+#+end_src

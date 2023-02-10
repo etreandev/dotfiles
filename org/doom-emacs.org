@@ -1,0 +1,426 @@
+:properties:
+:header-args:emacs-lisp: :tangle /home/andres/.doom.d/config.el
+:end:
+
+#+title: Doom Emacs Config
+#+startup: overview
+
+* Header
+#+begin_src emacs-lisp
+;;; $doomdir/config.el -*- lexical-binding: t; -*-
+
+#+end_src
+* User info
+some functionality uses this to identify you, e.g. gpg configuration, email
+clients, file templates and snippets. it is optional.
+#+begin_src emacs-lisp
+(setq user-full-name "andrés peña conzuelo"
+      user-mail-address "andres.pena@clairvoyantsoft.com")
+#+end_src
+* Font
+doom exposes five (optional) variables for controlling fonts in doom:
+- `doom-font':: the primary font to use
+- `doom-variable-pitch-font':: a non-monospace font (where applicable)
+- `doom-big-font':: used for `doom-big-font-mode'; use this for presentations or streaming.
+- `doom-unicode-font':: for unicode glyphs
+- `doom-serif-font':: for the `fixed-pitch-serif' face
+#+begin_src emacs-lisp
+(setq doom-font (font-spec :family "Monolisa" :size 25 :weight 'regular)
+      doom-big-font (font-spec :family "Monolisa" :size 30 :weight 'bold)
+      doom-pitch-font (font-spec :family "Monolisa" :size 25)
+      doom-variable-pitch-font (font-spec :family "Monolisa" :size 25)
+      doom-unicode-font (font-spec :family "Dankmono Nerd Font" :size 25))
+
+(after! doom-themes
+  (setq! doom-themes-enable-bold t)
+  (setq! doom-themes-enable-italic t))
+
+(custom-set-faces!
+  '(font-lock-comment-face    :slant italic :weight regular)
+  '(font-lock-keyword-face    :slant italic :weight medium))
+
+(setq org-src-fontify-natively t)
+#+end_src
+* Org
+** Org todo keyword
+*** org todo keywords define
+#+begin_src emacs-lisp
+(after! org
+  ;; (defun ap/org-todo-keywords-define ()
+  ;;; set org ellipsis, and define my keywords
+  ;; (interactive)
+  (setq org-ellipsis " ▼ "
+        org-todo-keywords '((sequence  "TODO(t)" ;(t)odo
+                                       "INPR(i)" ;(i)n progress
+                                       "HELP(h)" ;(h)elp
+                                       "LOCK(l)" ;b(l)ocked
+                                       "|"
+                                       "DONE(d)"
+                                       "KILL(k)")
+                            (sequence  "READY(r)"
+                                       "NEXT(x)"
+                                       "BKLG(b)"
+                                       "|"
+                                       "CANCELLED(c)")
+                            (sequence  "ASK(a)"
+                                       "YES(y)"
+                                       "MAYBE(m)"
+                                       "|"
+                                       "NO(n)")
+                            (sequence  "[ ](T)"
+                                       "[✓](C)"
+                                       "[-](W)"
+                                       "[!](H)"
+                                       "[L](L)"
+                                       "|"
+                                       "[X](D)"
+                                       "[K](K)")
+                            (sequence  "WANT(w)"
+                                       "|"
+                                       "GOT(g)"))
+        org-table-convert-region-max-lines 20000
+        org-hide-leading-stars t))
+#+end_src
+*** org todo keyword faces custom
+#+begin_src emacs-lisp
+(after! org
+        (setq org-todo-keyword-faces '(("TODO"       :foreground "#adda78" :weight bold)
+                                        ("INPR"      :foreground "#a8a9eb" :weight bold)
+                                        ("READY"     :foreground "#f38d79" :weight bold)
+                                        ("NEXT"      :foreground "#f38d79" :weight bold)
+                                        ("BKLG"      :foreground "#f9cc6c" :weight bold)
+                                        ("LOCK"      :foreground "#f38d79" :weight bold)
+                                        ("HELP"      :foreground "#f38d79" :weight bold)
+                                        ("YES"       :foreground "#adda78" :weight bold)
+                                        ("MAYBE"     :foreground "#a8a9eb" :weight bold)
+                                        ("KILL"      :foreground "#fd6883" :weight bold)
+                                        ("CANCELLED" :foreground "#fd6883" :weight bold)
+                                        ("WANT"      :foreground "#f38d79" :weight bold)
+                                        ("[C]"       :foreground "#adda78" :weight bold)
+                                        ("[ ]"       :foreground "#f9cc6c" :weight bold)
+                                        ("[-]"       :foreground "#a8a9eb" :weight bold)
+                                        ("[L]"       :foreground "#f38d79" :weight bold)
+                                        ("[!]"       :foreground "#f38d79" :weight bold)
+                                        ("[X]"       :foreground "#615959" :weight bold)
+                                        ("[K]"       :foreground "#fd6883" :weight bold))))
+#+end_src
+
+** Org superstar bullets customize
+#+begin_src emacs-lisp
+(after!  (org org-superstar)
+;;   (defun ap/org-superstar-bullets-customize ()
+  ;;; customize bullets for todo and headline
+  ;; (interactive)
+  (setq org-superstar-headline-bullets-list '("◉" "●" "○" "◆" "●" "○" "◆" "●")
+        org-superstar-todo-bullet-alist '(("TODO"      . ?☐)
+                                          ("BKLG"      . ?☾)
+                                          ("READY"     . ?➡)
+                                          ;; ("[ ]"       . ?☐)
+                                          ("INPR"      . ?▣)
+                                          ;; ("[-]"       . ?▣)
+                                          ("DONE"      . ?☑)
+                                          ;; ("[X]"       . ?☑)
+                                          ;; ("[C]"       . ?☑)
+                                          ("CANCELLED" . ?☒)
+                                          ("WANT"      . ?♥)
+                                          ("GOT"       . ?☻)
+                                          ;; ("[K]"       . ?☒)
+                                          ("LOCK"      . ?!)
+                                          ;; ("[L]"       . ?!)
+                                          ("HELP"      . ??)
+                                          ;; ("[?]"       . ??)
+                                          ("ASK"       . ??)
+                                          ("YES"       . ?✓)
+                                          ("MAYBE"     . ?◊)
+                                          ("NO"        . ?╳))
+        org-superstar-itembullet-alist '((?+ . ?➤) (?- . ?✦))
+        org-superstar-special-todo-items t
+        org-superstar-remove-leading-stars t)
+  (org-superstar-restart))
+#+end_src
+** Org keyword words replace
+#+begin_src emacs-lisp
+(after! org
+  (defun ap/set-keyword-faces-org ()
+  (mapc (lambda (pair) (push pair prettify-symbols-alist))
+        '(  ("TODO "      .  "")
+            ("BKLG "      .  "")
+            ("READY "     .  "")
+            ;; ("[ ] "       .  "")
+            ("INPR "      .  "")
+            ;; ("[-] "       .  "")
+            ("DONE "      .  "")
+            ;; ("[✓] "       .  "")
+            ;; ("[X] "       .  "")
+            ("CANCELLED " .  "")
+            ;; ("[K] "       .  "")
+            ("LOCK "      .  "")
+            ;; ("[L] "       .  "")
+            ("HELP "      .  "")
+            ;; ("[!] "       .  "")
+            ("ASK "       .  "")
+            ("YES "       .  "")
+            ("MAYBE "     .  "")
+            ("NO "        .  "")
+            ("WANT "        .  "")
+            ("GOT "        .  "")
+            ;; ("#+begin_src".  "@")
+            ;; ("#+end_src"  .  "@")
+            ))
+  (global-prettify-symbols-mode +1)
+  (org-superstar-mode +1)))
+(add-hook 'org-mode-hook #'ap/set-keyword-faces-org)
+#+end_src
+** Org custom startup
+#+begin_src emacs-lisp
+;; (after! (org org-superstar)
+;;   (defun ap/org-custom-startup ()
+;;     ;;; Prepare org as per my liking
+;;     (interactive)
+;;     (org-superstar-mode +1)
+;;     (prettify-symbols-mode +1)
+;;     (ap/org-todo-keywords-define)
+;;     (ap/org-keyword-words-replace)
+;;     (ap/org-todo-keyword-faces-custom)
+;;     (ap/org-superstar-bullets-customize)
+;;     (org-superstar-restart))
+;;  (add-hook 'org-mode-hook #'ap/org-custom-startup) )
+#+end_src
+** Org super agenda
+*** Org QL Block priorities
+#+begin_src emacs-lisp
+(after! org
+  (setq
+    org-agenda-custom-commands
+        '(
+          ("s" "Sprint Backlog"
+           (
+            (org-ql-block '(and (todo "HELP" "LOCK" "[?]" "[L]")
+                                (not (tags "@RECURRENT")))
+                          ((org-ql-block-header "ROADBLOCKS")))
+            (org-ql-block '(and (todo "INPR" "[-]")
+                                (not (tags "@RECURRENT")))
+                          ((org-ql-block-header "IN PROGRESS")))
+            (org-ql-block '(and (todo "READY" "[ ]")
+                                (not (tags "@RECURRENT"))
+                                (priority "A"))
+                          ((org-ql-block-header "PRIORITIES")))
+            (org-ql-block '(and (todo "TODO" "READY" "[ ]")
+                                (not (tags "@RECURRENT"))
+                                (priority "B"))
+                          ((org-ql-block-header "IMPORTANT")))
+            (org-ql-block '(and (todo "TODO" "READY" "[ ]")
+                                (not (tags "@RECURRENT"))
+                                (priority "C"))
+                          ((org-ql-block-header "NICE TO HAVE")))
+            (org-ql-block '(and (todo "READY" "[ ]" "TODO")
+                                (not (tags "@RECURRENT"))
+                                (not (priority "A" "B" "C")))
+                          ((org-ql-block-header "UNPRIORITIZED ELEMENTS")))))
+          ("i" "Ideas"
+            ((org-ql-block '(todo "ASK")
+                           ((org-ql-block-header "IDEAS")))
+            (org-ql-block '(todo "YES")
+                           ((org-ql-block-header "APPROVED")))
+            (org-ql-block '(todo "MAYBE")
+                           ((org-ql-block-header "MAYBE")))
+            (org-ql-block '(todo "NO")
+                           ((org-ql-block-header "DENIED")))))
+          ("w" "Wishlist"
+            (
+             (org-ql-block '(and (todo "WANT")
+                                 (tags "@EBOOK" "@MOVIE" "@GAME" "@VACATIONS" "@SHOW"))
+                           ((org-ql-block-header "ENTERTAINMENT")))
+             (org-ql-block '(and (todo "WANT")
+                                 (tags "@TOOLS" "@DEVICES"))
+                           ((org-ql-block-header "AIDES")))
+             (org-ql-block '(and (todo "WANT")
+                                 (tags "@PERSONAL" "@PROFESSIONAL"))
+                           ((org-ql-block-header "GROWTH IDEAS")))))
+          ("b" "Project Backlog"
+            ((org-ql-block '(todo "READY")
+                           ((org-ql-block-header "READY")))
+             (org-ql-block '(todo "NEXT")
+                           ((org-ql-block-header "REFINE")))
+             (org-ql-block '(todo "BKLG")
+                           ((org-ql-block-header "SOMEDAY")))
+             )))))
+
+#+end_src
+
+#+RESULTS:
+| s | Sprint Backlog  | ((org-ql-block '(and (todo HELP LOCK [?] [L]) (not (tags @RECURRENT))) ((org-ql-block-header ROADBLOCKS))) (org-ql-block '(and (todo INPR [-]) (not (tags @RECURRENT))) ((org-ql-block-header IN PROGRESS))) (org-ql-block '(and (todo READY [ ]) (not (tags @RECURRENT)) (priority A)) ((org-ql-block-header PRIORITIES))) (org-ql-block '(and (todo TODO READY [ ]) (not (tags @RECURRENT)) (priority B)) ((org-ql-block-header IMPORTANT))) (org-ql-block '(and (todo TODO READY [ ]) (not (tags @RECURRENT)) (priority C)) ((org-ql-block-header NICE TO HAVE))) (org-ql-block '(and (todo READY [ ] TODO) (not (tags @RECURRENT)) (not (priority A B C))) ((org-ql-block-header UNPRIORITIZED ELEMENTS)))) |
+| i | Ideas           | ((org-ql-block '(todo ASK) ((org-ql-block-header IDEAS))) (org-ql-block '(todo YES) ((org-ql-block-header APPROVED))) (org-ql-block '(todo MAYBE) ((org-ql-block-header MAYBE))) (org-ql-block '(todo NO) ((org-ql-block-header DENIED)))) |
+| w | Wishlist        | ((org-ql-block '(and (todo WANT) (tags @EBOOK @MOVIE @GAME @VACATIONS @SHOW)) ((org-ql-block-header ENTERTAINMENT))) (org-ql-block '(and (todo WANT) (tags @TOOLS @DEVICES)) ((org-ql-block-header AIDES))) (org-ql-block '(and (todo WANT) (tags @PERSONAL @PROFESSIONAL)) ((org-ql-block-header GROWTH IDEAS)))) |
+| b | Project Backlog | ((org-ql-block '(todo READY) ((org-ql-block-header READY))) (org-ql-block '(todo NEXT) ((org-ql-block-header REFINE))) (org-ql-block '(todo BKLG) ((org-ql-block-header SOMEDAY)))) |
+
+*** Org QL search priorities
+#+begin_src emacs-lisp
+  (defun ap/org-ql-search-priorities ()
+    (interactive)
+        (org-ql-search
+            (org-agenda-files)
+            '(and
+                (todo "TODO" "READY" "INPR" "[ ]" "YES")
+                (priority "A"))
+            :sort 'priority
+            :title "PRIORITIES") )
+(map!
+    :leader
+    :prefix "o"
+    :desc "List priorities"  "p"  'ap/org-ql-search-priorities)
+#+end_src
+
+#+RESULTS:
+: ap/org-ql-search-priorities
+
+*** Org QL shortcuts
+#+begin_src emacs-lisp
+(map! :leader
+      :prefix "o"
+      :desc "Find in org-agenda-files" "f" 'org-ql-find-in-agenda)
+
+(map! :leader
+      :prefix "o"
+      :desc "Find in buffer" "b" 'org-ql-find)
+#+end_src
+
+** Org agenda
+#+begin_src emacs-lisp
+(after! org
+  (setq org-agenda-files '("~/org" "~/winhome/org" "~/winhome/Documents/org" "~/winhome/training/org")))
+#+end_src
+
+* Tabnine
+#+begin_src emacs-lisp
+;;(require 'company-tabnine)
+;;(add-to-list 'company-backends #'company-tabnine)
+;; Trigger completion immediately.
+;;(setq company-idle-delay 0)
+#+end_src
+
+* Theme
+** Theme defaults
+There are two ways to load a theme. Both assume the theme is installed
+and available. You can either set `doom-theme' or manually load a theme with the
+`load-theme' function. This is the default:
+#+begin_src emacs-lisp
+(setq doom-theme 'doom-monokai-ristretto)
+#+end_src
+
+This determines the style of line numbers in effect. If set to `nil', line
+numbers are disabled. For relative line numbers, set this to `relative'.
+#+begin_src emacs-lisp
+(setq display-line-numbers-type 'relative)
+#+end_src
+
+** Custom Ristretto
+#+begin_src emacs-lisp
+;;; ap/org-colors-monokai-ristretto --- prettifies org in my favourite theme
+;;; Commentary:
+;;; Don't delete this!
+;;; Code:
+(defun ap/org-colors-monokai-ristretto ()
+  ;;; Enable colors for monokai ristretto
+  (interactive)
+  (dolist
+      (face
+       '(
+        ;; Family face              Size | Background | Foreground  | Slant   | Weight
+          (font-lock-comment-face    1.00   nil          "#72696A"    italic    regular)
+          (font-lock-keyword-face    1.00   nil          "#FD6883"    italic    regular)
+          (line-number-current-line  1.00   nil          "#F9CC6C"    normal    bold)
+          (org-block-begin-line      1.00   nil          "#A8A9EB"    italic    regular)
+          (org-block-end-line        1.00   nil          "#A8A9EB"    italic    regular)
+          (org-document-info-keyword 1.00   nil          "#A8A9EB"    italic    bold)
+          (org-document-title        1.50   nil          "#FD6883"    normal    bold)
+          (org-done                  1.00   nil          "#72696A"    italic    regular)
+          (org-drawer                1.00   nil          "#A8A9EB"    italic    light)
+          (org-headline-done         1.00   nil          "#72696A"    italic    bold)
+          (org-level-1               1.32   nil          "#F38D70"    normal    semibold)
+          (org-level-2               1.28   nil          "#F9CC6C"    normal    semibold)
+          (org-level-3               1.24   nil          "#ADDA78"    normal    semibold)
+          (org-level-4               1.20   nil          "#85DACC"    normal    semibold)
+          (org-level-5               1.16   nil          "#A8A9EB"    normal    semibold)
+          (org-level-6               1.12   nil          "#F38D70"    normal    semibold)
+          (org-level-7               1.08   nil          "#F9CC6C"    normal    semibold)
+          (org-level-8               1.04   nil          "#ADDA78"    normal    semibold)
+          (org-meta-line             1.00   nil          "#A8A9EB"    italic    light)
+          (org-property-value        1.00   nil          "#F9CC6C"    italic    light)
+          (org-special-keyword       1.00   nil          "#A8A9EB"    italic    regular)
+          (org-todo                  1.00   nil          "#ADDA78"          normal    bold)
+          ;; (hl-line                   1.00   "#382F2F"    nil          normal   regular)
+          (org-block                 1.00   "#2F2828"    nil          normal    light)
+          (region                    1.00   "#4C4646"    nil          normal    regular)))
+    (set-face-attribute (nth 0 face) nil
+                        :font        doom-variable-pitch-font
+                        :height      (nth 1 face)
+                        :background  (nth 2 face)
+                        :foreground  (nth 3 face)
+                        :slant       (nth 4 face)
+                        :weight      (nth 5 face))))
+(after! org
+  (add-hook 'org-mode-hook 'ap/org-colors-monokai-ristretto))
+
+#+end_src
+
+* Snowflake
+** Require ejc-sql
+#+begin_src emacs-lisp
+;; (require 'ejc-sql)
+#+end_src
+** Set HTTPD port
+#+begin_src emacs-lisp
+;; (setq clomacs-httpd-default-port 8090) ; Use a port other than 8080.
+#+end_src
+** Configure query behavior
+#+begin_src emacs-lisp
+;; (add-hook 'ejc-sql-connected-hook
+;;           (lambda ()
+;;             (ejc-set-fetch-size 50)
+;;             (ejc-set-max-rows 50)
+;;             (ejc-set-show-too-many-rows-message t)
+;;             (ejc-set-column-width-limit 25)
+;;             (ejc-set-use-unicode t)))
+#+end_src
+** Enable Results in Org mode
+#+begin_src emacs-lisp
+;; (setq ejc-result-table-impl 'orgtbl-mode)
+#+end_src
+
+* SQL
+** Extra Keywords for SQL
+#+begin_src emacs-lisp
+(font-lock-add-keywords 'sql-mode
+                        '(("\\b\\(use\\)\\b" . font-lock-keyword-face) 
+                          ("\\b\\(transient\\)\\b" . font-lock-keyword-face) 
+                          ("\\b\\(database\\(s\\)?\\)\\b" . font-lock-keyword-face)
+                          ("\\b\\(show\\)\\b" . font-lock-keyword-face)
+                          ("\\b\\(tables\\)\\b" . font-lock-keyword-face)
+                          ("\\b\\(truncate\\)\\b" . font-lock-keyword-face)
+                          ("\\b\\(or\\)\\b" . font-lock-keyword-face)
+                          ("\\b\\(views\\)\\b" . font-lock-keyword-face)
+                          ("\\b\\(stage\\(s\\)?\\)\\b" . font-lock-keyword-face)
+                          ("\\b\\(share\\(s\\)?\\)\\b" . font-lock-keyword-face)
+                          ("\\b\\(ownership\\)\\b" . font-lock-keyword-face)
+                          ("\\b\\(list\\)\\b" . font-lock-keyword-face)
+                          ("\\b\\(pipe\\(s\\)?\\)\\b" . font-lock-keyword-face)
+                          ("\\b\\(integration\\(s\\)?\\)\\b" . font-lock-keyword-face)
+                          ("\\b\\(replace\\)\\b" . font-lock-keyword-face)
+                          ("\\b\\(warehouse\\(s\\)?\\)\\b" . font-lock-keyword-face)))
+#+end_src
+
+* Nyxt
+[[file:~/.config/nyxt/init.lisp][Nyxt config file]]
+#+begin_src emacs-lisp
+(after! browse-url
+  (setq browse-url-generic-program "~/nyxt/usr/local/bin/nyxt"
+        inferior-lisp-program      "clisp")
+  (defun browse-url-nyxt ()
+        (interactive)
+        (browse-url-generic "https://www.google.com"))
+  (map! :leader
+        :prefix "b"
+        :desc "Browse web"  "w"  'browse-url-nyxt))
+#+end_src
+

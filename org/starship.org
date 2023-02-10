@@ -1,0 +1,9 @@
+#+title: Starship
+#+startup: overview
+
+* Character
+#+begin_src toml
+[character]
+success_symbol= "[\uf739](bold green)"
+error_symbol= "[\uf739](bold red)"
+#+end_src

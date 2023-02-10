@@ -1,0 +1,35 @@
+#+title: Sublime Settings
+
+* Neovintageous
+#+begin_src json
+{
+    "ignored_packages":
+    [
+        "Six",
+        "Vintage",
+        "Vintageous",
+    ],
+    "font_face": "MonoLisa Light",
+    "font_options": [
+        "ss02",
+        "liga",
+        "calt"
+    ],
+
+    "translate_tabs_to_spaces": true,
+    "monokai_pro_style_title_bar": true,
+    "monokai_pro_small_scrollbar": true,
+    "font_size": 14,
+    "neovintageous_build_version": 12700,
+    "auto_complete": true,
+    // "vintageous_use_ctrl_keys": true,
+    "vintageous_use_sys_clipboard": true,
+    "relative_line_numbers": true,
+    "hardware_acceleration": "opengl",
+    "color_scheme": "Monokai Pro (Filter Ristretto).sublime-color-scheme",
+    "theme": "Monokai Pro (Filter Ristretto).sublime-theme",
+    "vintageous_use_ctrl_keys": false,
+}
+#+end_src
+* Monokai Pro
+* UI
