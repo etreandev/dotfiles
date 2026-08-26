@@ -1,0 +1,9 @@
+# Sensitive files
+*.sublime_session
+*.sublime_license
+*.bak
+fish_variables
+
+# Binary / generated
+*.pyc
+*.sublime-package

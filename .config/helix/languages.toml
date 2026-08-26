@@ -1,0 +1,4 @@
+[language-server.pylsp.config.pylsp.plugins]
+jedi = { environment = ".venv" }
+pylsp_mypy = { enabled = true, live_mode = false, overrides = ["--python-executable", ".venv/bin/python", true] }
+pylsp_ruff = { enabled = true }
